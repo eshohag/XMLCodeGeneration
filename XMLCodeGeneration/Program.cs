@@ -17,13 +17,25 @@ namespace XMLCodeGeneration
             var body = root.AppendChild(doc.CreateElement("", "Body", soapNs));
             var createCustomer = body.AppendChild(doc.CreateElement("", "createCustomer", v1));
             var custAddRq = createCustomer.AppendChild(doc.CreateElement("", "CustAddRq", ""));
+
             var rqHeader = custAddRq.AppendChild(doc.CreateElement("", "RqHeader", v2));
-
-            rqHeader.AppendChild(doc.CreateElement("", "InstNum", v2)).InnerText = "003";
-            rqHeader.AppendChild(doc.CreateElement("", "BrchNum", v2)).InnerText = "0001";
-
             var data = custAddRq.AppendChild(doc.CreateElement("", "Data", v2));
-            data.AppendChild(doc.CreateElement("", "SSDone", v2)).InnerText = "N";
+
+            if (string.IsNullOrWhiteSpace(prefix))
+            {
+                rqHeader.AppendChild(doc.CreateElement("", "InstNum", v2)).InnerText = "003";
+                rqHeader.AppendChild(doc.CreateElement("", "BrchNum", v2)).InnerText = "0001";
+                data.AppendChild(doc.CreateElement("", "SSDone", v2)).InnerText = "N";
+
+            }
+            else
+            {
+                rqHeader.AppendChild(doc.CreateElement(prefix, "InstNum", v2)).InnerText = "003";
+                rqHeader.AppendChild(doc.CreateElement(prefix, "BrchNum", v2)).InnerText = "0001";
+                data.AppendChild(doc.CreateElement(prefix, "SSDone", v2)).InnerText = "N";
+
+            }
+
 
             var xml = doc.GetOuterXml();
 
